@@ -6,10 +6,28 @@ import { Card, CardBody, CardSubtitle, CardText, CardTitle } from 'reactstrap';
 const Tbook = () => {
     const [error, setError] = useState(null);
     const [book, setBook] = useState([]);
-  
+    const [minPrice, setMin] = useState('0');
+    const [maxPrice, setMax] = useState('1000');
+    const [submitEnabled, setSubmitEnabled] = useState(true);
+    
+    /*const handleMinChange = (min) => {
+        setMin(min.target.value)
+    };
+
+    const handleMaxChange = (max) => {
+        setMin(max.target.value)
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSubmitEnabled(false);
+    }
+*/
+    const min = '100'
+
     useEffect(() => {
       axios
-        .get("http://localhost:1337/api/books")
+        .get("http://localhost:1337/api/books?filters[Price][$gte]="+min)
         .then(({ data }) => setBook(data.data))
         .catch((error) => setError(error));
     }, []);
