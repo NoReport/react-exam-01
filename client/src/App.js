@@ -1,11 +1,12 @@
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import tBook from './components/tableBook';
+import Tbook from './components/tableBook';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="" element={<tBook />} />
+        <Route path="" element={<Tbook />} />
       </Routes>
     </Router>
   );

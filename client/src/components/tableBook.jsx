@@ -1,7 +1,9 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Card, CardBody, CardSubtitle, CardText, CardTitle } from 'reactstrap';
 
-const tBook = () => {
+const Tbook = () => {
     const [error, setError] = useState(null);
     const [book, setBook] = useState([]);
   
@@ -18,22 +20,23 @@ const tBook = () => {
 
     return (
         <div className="wrapper">
-            <Form>
-                <Col md={6}>
-                    <FormGroup>
-                        <Label for="min">
-                        Minimum Price
-                        </Label>
-                        <Input
-                        id="min"
-                        name="minPrice"
-                        placeholder="with a placeholder"
-                        />
-                    </FormGroup>
-                    </Col>
-            </Form>
+    
+            {book.map(( {id, attributes}) => (
+                <li key={id}>
+                    <Card style={{
+                        width:"30px"
+                    }}>
+                        <CardBody>
+                            <CardTitle tag={'h5'}>{attributes.Title} </CardTitle>
+                            <CardSubtitle>{attributes.Price}฿  </CardSubtitle>
+                            <CardText>{attributes.Desc} </CardText>
+                        </CardBody>
+                        
+                    </Card>   
+                </li>
+            ))}
         </div>
     )
 }
 
-export default tBook;
+export default Tbook;
