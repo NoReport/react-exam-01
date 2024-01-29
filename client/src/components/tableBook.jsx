@@ -2,15 +2,16 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, CardBody, CardSubtitle, CardText, CardTitle } from 'reactstrap';
+import { Form, Button } from 'react-bootstrap';
 
 const Tbook = () => {
     const [error, setError] = useState(null);
     const [book, setBook] = useState([]);
-    const [minPrice, setMin] = useState('0');
-    const [maxPrice, setMax] = useState('1000');
+    const [min, setMin] = useState('0');
+    const [max, setMax] = useState('1000');
     const [submitEnabled, setSubmitEnabled] = useState(true);
     
-    /*const handleMinChange = (min) => {
+    const handleMinChange = (min) => {
         setMin(min.target.value)
     };
 
@@ -18,27 +19,55 @@ const Tbook = () => {
         setMin(max.target.value)
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitEnabled(false);
-    }
-*/
-    const min = '100'
+        try {
+            let result = await axios.get("http://localhost:1337/api/books?filters[Price][$gte]="+min+"&filters[Price][$lte]="+max)
+            .then(({ data }) => setBook(data.data))
+            .catch((error) => setError(error));
 
-    useEffect(() => {
-      axios
-        .get("http://localhost:1337/api/books?filters[Price][$gte]="+min)
-        .then(({ data }) => setBook(data.data))
-        .catch((error) => setError(error));
-    }, []);
-  
-    if (error) {
-      return <div>An error occured: {error.message}</div>;
+
+
+    }catch (error){
+        return <div>An error occured: {error.message}</div>;
     }
+
+    
+    }
+    
 
     return (
         <div className="wrapper">
-    
+            <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="MinPriceForm">
+                <Form.Label>Minimum Price</Form.Label>
+                <Form.Control
+                    type="text"
+                    placeholder="Minimum"
+                    value={min}
+                    onChange={handleMinChange}
+                    required
+                />
+            </Form.Group>
+
+            <Form.Group controlId="MaxPriceForm">
+                <Form.Label>Maximum Price</Form.Label>
+                <Form.Control
+                    type="text"
+                    placeholder="Maximum"
+                    value={max}
+                    onChange={handleMaxChange}
+                    required
+                />
+            </Form.Group>
+
+            <Button variant="primary" type="submit" disabled={!submitEnabled}>
+                Submit
+            </Button>
+        </Form>
+
             {book.map(( {id, attributes}) => (
                 <li key={id}>
                     <Card style={{
